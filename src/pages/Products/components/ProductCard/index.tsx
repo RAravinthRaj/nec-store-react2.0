@@ -110,43 +110,39 @@ export const ProductCard = ({
   };
 
   const _renderCardInitialDetails = () => (
-    <S.ProductDetailContainer>
-      <S.ImageSection>
-        <S.ImageContainer>
+    <S.ProductDetailContainer $isRetailer={isRetailer}>
+      <S.ImageSection $isRetailer={isRetailer}>
+        <S.ImageContainer $isRetailer={isRetailer}>
           <S.Image
             src={product.productImage ?? theme.images.defaultProductImage}
           />
         </S.ImageContainer>
       </S.ImageSection>
-      <S.ContentSection>
+      <S.ContentSection $isRetailer={isRetailer}>
         <S.CategoryContainer $bgColor={theme.colors.primary}>
           {product?.category}
         </S.CategoryContainer>
 
         {!isRetailer ? (
-          <S.TitleRow>
-            <S.TitleContainer title={product?.title}>{product?.title}</S.TitleContainer>
-            <S.StockPill
-              $isLowStock={product?.quantity <= PRODUCTS_CONFIG.threshold}
-            >
-              {_getStockLabel()}
-            </S.StockPill>
-          </S.TitleRow>
-        ) : (
-          <S.TitleContainer title={product?.title}>{product?.title}</S.TitleContainer>
-        )}
-
-        {!isRetailer ? (
           <>
-            <S.PriceSection>
-              <S.PriceLabel>Price</S.PriceLabel>
-              <S.HighlightPrice>
-                ₹ {Number(product?.price ?? 0).toFixed(2)}
-              </S.HighlightPrice>
-            </S.PriceSection>
+            <S.TitleContainer title={product?.title}>{product?.title}</S.TitleContainer>
+            <S.CustomerMetaRow>
+              <S.PriceSection>
+                <S.PriceLabel>Price</S.PriceLabel>
+                <S.HighlightPrice>
+                  ₹ {Number(product?.price ?? 0).toFixed(2)}
+                </S.HighlightPrice>
+              </S.PriceSection>
+              <S.CustomerAvailability
+                $isLowStock={product?.quantity <= PRODUCTS_CONFIG.threshold}
+              >
+                {_getStockLabel()}
+              </S.CustomerAvailability>
+            </S.CustomerMetaRow>
           </>
         ) : (
           <>
+            <S.TitleContainer title={product?.title}>{product?.title}</S.TitleContainer>
             <S.RetailerQuantityText>
               Quantity:{" "}
               <S.RetailerQuantityValue>
@@ -180,9 +176,12 @@ export const ProductCard = ({
               <S.RetailerPriceValue $isSellingPrice>
                 ₹ {Number(product?.price ?? 0).toFixed(2)}
               </S.RetailerPriceValue>
+              <S.RetailerPriceHint>
+                Adjust stock quickly without leaving this view.
+              </S.RetailerPriceHint>
             </S.RetailerPriceItem>
           </S.RetailerPriceCard>
-          <S.ButtonContainer>
+          <S.ButtonContainer $isRetailer>
             <S.Button
               $bgColor={theme.colors.primary}
               $canAdd
@@ -207,6 +206,9 @@ export const ProductCard = ({
               <S.RetailerPriceValue>
                 ₹ {Number(product?.price ?? 0).toFixed(2)}
               </S.RetailerPriceValue>
+              <S.RetailerPriceHint>
+                Base procurement value.
+              </S.RetailerPriceHint>
             </S.RetailerPriceItem>
             <S.RetailerPriceDivider />
             <S.RetailerPriceItem>
@@ -216,9 +218,12 @@ export const ProductCard = ({
               <S.RetailerPriceValue $isSellingPrice>
                 ₹ {Number(product?.sellingPrice ?? 0).toFixed(2)}
               </S.RetailerPriceValue>
+              <S.RetailerPriceHint>
+                Current storefront selling price.
+              </S.RetailerPriceHint>
             </S.RetailerPriceItem>
           </S.RetailerPriceCard>
-          <S.ButtonContainer>
+          <S.ButtonContainer $isRetailer>
             <S.Button
               $bgColor={theme.colors.primary}
               $canAdd
@@ -254,7 +259,7 @@ export const ProductCard = ({
     const isOutOfStock = product?.quantity <= PRODUCTS_CONFIG.threshold;
 
     return (
-      <S.ButtonContainer>
+      <S.ButtonContainer $isRetailer={false}>
         <S.Button
           $bgColor={theme.colors.primary}
           disabled={isAvailableInCart || isOutOfStock}
@@ -274,7 +279,7 @@ export const ProductCard = ({
 
   return (
     <div>
-      <S.CardContainer>
+      <S.CardContainer $isRetailer={isRetailer}>
         {_renderCardInitialDetails()}
         {_renderButton()}
       </S.CardContainer>

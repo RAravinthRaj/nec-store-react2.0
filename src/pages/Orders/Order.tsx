@@ -16,6 +16,7 @@ import {
 import { GetAllOrdersInput } from "./services/graphql";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import * as S from "./styles";
 
 const Orders = () => {
   const navigate = useNavigate();
@@ -198,19 +199,21 @@ const Orders = () => {
 
     if (getAllOrdersResponse && Object.keys(getAllOrdersResponse).length > 0) {
       return (
-        <>
+        <S.ContentCard>
           <OrderComp
             orders={orders}
             cancelOrder={_cancelOrder}
             updateOrder={_updateOrder}
           />
-          <CustomPagination
-            perPageCount={payload.limit}
-            totalPageCount={getAllOrdersResponse?.payload?.totalCount}
-            currentPage={payload?.skip / payload.limit + 1}
-            onPageChange={_onPageChange}
-          />
-        </>
+          <S.PaginationWrap>
+            <CustomPagination
+              perPageCount={payload.limit}
+              totalPageCount={getAllOrdersResponse?.payload?.totalCount}
+              currentPage={payload?.skip / payload.limit + 1}
+              onPageChange={_onPageChange}
+            />
+          </S.PaginationWrap>
+        </S.ContentCard>
       );
     }
 
@@ -219,7 +222,7 @@ const Orders = () => {
 
   if (checkAccessControl("orders")) {
     return (
-      <>
+      <S.PageShell>
         <SearchBar
           setPayload={setPayload}
           onSortPress={_onSortPress}
@@ -228,7 +231,7 @@ const Orders = () => {
         {_renderPage()}
         {_renderLoader()}
         {_renderError()}
-      </>
+      </S.PageShell>
     );
   }
 

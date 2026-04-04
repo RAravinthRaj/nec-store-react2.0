@@ -7,22 +7,10 @@ Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 import styled from "styled-components";
 
 export const OrderContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-  margin: 16px 0 30px;
-
-  @media (max-width: 1280px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  @media (max-width: 834px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 18px 0 34px;
 `;
 
 export const Divider = styled.div`
@@ -35,12 +23,16 @@ export const OrderTitle = styled.div`
   align-items: center;
   gap: 14px;
   margin-top: 8px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(4, 36, 200, 0.05), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(15, 23, 42, 0.08);
 `;
 
 export const DateContainer = styled.div`
   color: #0f172a;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   white-space: nowrap;
 `;
 
@@ -54,7 +46,7 @@ export const Line = styled.div`
 export const SeparateOrder = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 14px;
+  margin-top: 10px;
   padding: 6px 4px 12px;
 `;

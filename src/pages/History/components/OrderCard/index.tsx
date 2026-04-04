@@ -5,7 +5,7 @@ Proprietary and confidential.
 Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 */
 import { useState } from "react";
-import { useTheme } from "../../../../hooks";
+import { useIsNotDesktop, useTheme } from "../../../../hooks";
 import * as S from "./styles";
 import { ViewItemModal } from "../ViewItem";
 import { HISTORY_CONFIG } from "../../config";
@@ -16,7 +16,9 @@ export interface IOrderCard {
 
 export const OrderCard = ({ individualOrder }: IOrderCard) => {
   const theme = useTheme();
+  const isMobile = useIsNotDesktop();
   const [modal, setModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const itemCount = individualOrder?.products?.length || 0;
   const paidStatus = individualOrder?.paidStatus || "unpaid";
   const deliveryStatus = individualOrder?.deliveryStatus || "pending";
@@ -89,12 +91,70 @@ export const OrderCard = ({ individualOrder }: IOrderCard) => {
     );
   };
 
+  const _renderMobileLayout = () => {
+    return (
+      <S.MobileAccordion>
+        <S.MobileAccordionHeader
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
+        >
+          <S.MobileAccordionTitleBlock>
+            <S.MobileLabel>{HISTORY_CONFIG.orderNumber}</S.MobileLabel>
+            <S.MobilePrimaryValue>{individualOrder?.orderID}</S.MobilePrimaryValue>
+          </S.MobileAccordionTitleBlock>
+          <S.MobileChevron $expanded={expanded} />
+        </S.MobileAccordionHeader>
+
+        <S.MobileAccordionBody $expanded={expanded}>
+          <S.MobileAccordionInner>
+            <S.MobileGrid>
+              <S.MobileInfoBox>
+                <S.MobileLabel>{HISTORY_CONFIG.orderBy}</S.MobileLabel>
+                <S.MobileValue>{individualOrder?.orderBy}</S.MobileValue>
+              </S.MobileInfoBox>
+
+              <S.MobileInfoBox>
+                <S.MobileLabel>{HISTORY_CONFIG.date}</S.MobileLabel>
+                <S.MobileValue>{individualOrder?.date}</S.MobileValue>
+              </S.MobileInfoBox>
+
+              <S.MobileTotalBox>
+                <S.MobileLabel>{HISTORY_CONFIG.prMrp}</S.MobileLabel>
+                <S.MobileTotalValue>
+                  {Number(individualOrder?.totalAmount).toFixed(2)}
+                </S.MobileTotalValue>
+                <S.MobileSubtleText>
+                  {itemCount} item{itemCount === 1 ? "" : "s"}
+                </S.MobileSubtleText>
+              </S.MobileTotalBox>
+            </S.MobileGrid>
+
+            <S.MobileButtonRow>
+              <S.Button
+                $bgColor={theme.colors.primary}
+                onClick={() => setModal(true)}
+              >
+                <S.ViewIcon />
+                {HISTORY_CONFIG.viewButton}
+              </S.Button>
+            </S.MobileButtonRow>
+          </S.MobileAccordionInner>
+        </S.MobileAccordionBody>
+      </S.MobileAccordion>
+    );
+  };
+
   return (
     <div>
-      <S.CardContainer>
-        {_renderTitle()}
-        {_renderBody()}
-      </S.CardContainer>
+      {isMobile ? (
+        _renderMobileLayout()
+      ) : (
+        <S.CardContainer>
+          {_renderTitle()}
+          {_renderBody()}
+        </S.CardContainer>
+      )}
       <ViewItemModal
         modalShow={modal}
         onClose={() => setModal(false)}

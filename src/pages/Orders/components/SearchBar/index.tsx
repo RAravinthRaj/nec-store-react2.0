@@ -9,8 +9,6 @@ import * as S from "./styles";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useState } from "react";
 import { ORDERS_CONFIG } from "../../config";
-import { IoIosSearch } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
 
 export interface ISearchComp {
   setPayload(payload: any): void;
@@ -125,7 +123,7 @@ export const SearchBar = ({
           />
           {searchValue.length > 0 && (
             <S.ClearButton title="clear" onClick={_clearSearch}>
-              <RxCross2 size={24} color="black" />
+              <S.ClearIcon />
             </S.ClearButton>
           )}
           <S.SearchButton
@@ -134,7 +132,7 @@ export const SearchBar = ({
               onSearchPress();
             }}
           >
-            <IoIosSearch size={25} />
+            <S.SearchIcon />
           </S.SearchButton>
         </S.InputWrapper>
         <S.SortContainer>{_renderSortedOptions()}</S.SortContainer>
@@ -143,7 +141,19 @@ export const SearchBar = ({
   };
 
   const _renderActionItems = () => {
-    return <S.ActionContainer>{_renderSearchBar()}</S.ActionContainer>;
+    return (
+      <S.ToolbarCard>
+        <S.ToolbarCopy>
+          <S.ToolbarEyebrow>Order Filters</S.ToolbarEyebrow>
+          <S.ToolbarTitle>Search the queue with less friction.</S.ToolbarTitle>
+          <S.ToolbarSubtitle>
+            Switch between order ID and purchaser number, sort the list, and
+            keep daily order operations fast and readable.
+          </S.ToolbarSubtitle>
+        </S.ToolbarCopy>
+        <S.ActionContainer>{_renderSearchBar()}</S.ActionContainer>
+      </S.ToolbarCard>
+    );
   };
 
   const _renderSortedOptionsTitle = () => {

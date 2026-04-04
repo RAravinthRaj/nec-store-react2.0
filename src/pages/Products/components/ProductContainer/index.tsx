@@ -35,7 +35,7 @@ export const ProductContainer = ({
 }: IProductContainer) => {
   return (
     <S.Wrapper>
-      <S.ProductContainer>
+      <S.ProductContainer $isRetailer={isRetailer}>
         {products.map((product, id) => (
           <ProductCard
             key={id}

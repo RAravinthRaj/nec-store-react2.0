@@ -8,10 +8,67 @@ import styled from "styled-components";
 import { SlArrowDown } from "react-icons/sl";
 import { Dropdown } from "react-bootstrap";
 import { ImSortAlphaAsc } from "react-icons/im";
+import { IoIosSearch } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+
+export const ToolbarCard = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.05);
+
+  @media (max-width: 576px) {
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+`;
+
+export const ToolbarCopy = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (max-width: 576px) {
+    display: none;
+  }
+`;
+
+export const ToolbarEyebrow = styled.span`
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(4, 36, 200, 0.08);
+  color: #0424c8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+export const ToolbarTitle = styled.h2`
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+`;
+
+export const ToolbarSubtitle = styled.p`
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.7;
+`;
 
 export const ActionItem = styled.div`
   display: flex;
-  flex: 1.5;
+  flex: 1;
   justify-content: center;
 
   @media (max-width: 576px) {
@@ -24,13 +81,15 @@ export const ActionItem = styled.div`
 export const ActionContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   @media (max-width: 576px) {
-    margin: 0;
-    justify-content: center;
-    font-size: 12px;
-    gap: 8px;
+    gap: 10px;
   }
 `;
 
@@ -60,14 +119,15 @@ export const ClearButton = styled.button`
 `;
 
 export const InputWrapper = styled.div<{ $bgColor: string }>`
-  flex: 8;
-  height: 50px;
-  border-radius: 7px;
-  padding: 10px 20px;
+  flex: 1;
+  height: 56px;
+  border-radius: 18px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
-  border: solid 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
   @media (max-width: 768px) {
     flex: 1;
@@ -77,8 +137,8 @@ export const InputWrapper = styled.div<{ $bgColor: string }>`
   @media (max-width: 576px) {
     flex: 1;
     padding: 6px 10px;
-    height: 40px;
-    border-radius: 5px;
+    height: 42px;
+    border-radius: 12px;
     width: 100%;
     margin: 0;
   }
@@ -106,7 +166,7 @@ export const SortIcon = styled(ImSortAlphaAsc)<{
   $bgColor: string;
 }>`
   color: black;
-  font-size: 30px;
+  font-size: clamp(20px, 2vw, 30px);
 
   @media (max-width: 768px) {
     align-self: flex-end;
@@ -169,11 +229,12 @@ export const DropDownIcon = styled(SlArrowDown)<{
   $bgColor: string;
 }>`
   color: black;
-  font-size: 13px;
+  font-size: clamp(10px, 0.9vw, 13px);
 `;
 
 export const IconText = styled.div<{ $bgColor: string }>`
   color: ${(props) => props.$bgColor};
+  font-size: clamp(12px, 0.95vw, 14px);
 
   @media (max-width: 576px) {
     font-size: 14px;
@@ -221,6 +282,22 @@ export const Divider = styled.div`
 `;
 
 export const SearchButton = styled.button`
-  background-color: white;
+  width: clamp(32px, 2.8vw, 40px);
+  height: clamp(32px, 2.8vw, 40px);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   border: none;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SearchIcon = styled(IoIosSearch)`
+  font-size: clamp(17px, 1.45vw, 22px);
+`;
+
+export const ClearIcon = styled(RxCross2)`
+  color: black;
+  font-size: clamp(17px, 1.45vw, 22px);
 `;

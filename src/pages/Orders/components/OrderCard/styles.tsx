@@ -9,20 +9,29 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 export const CardContainer = styled.div`
   width: 100%;
-  overflow: hidden;
   border-radius: 22px;
-  background: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 255, 0.94));
   border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 16px 18px;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
     border-color 0.18s ease;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 38px rgba(15, 23, 42, 0.11);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(15, 23, 42, 0.1);
     border-color: rgba(4, 36, 200, 0.12);
+  }
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
   }
 
   @media (max-width: 576px) {
@@ -37,12 +46,19 @@ export const CardContainer = styled.div`
 
 export const TitleContainer = styled.div<{ $bgColor: string }>`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 18px 20px 14px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 0;
   background: linear-gradient(180deg, rgba(4, 36, 200, 0.06) 0%, rgba(4, 36, 200, 0.02) 100%);
+  border: 1px solid rgba(4, 36, 200, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+
+  @media (max-width: 576px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `;
 
 export const TitleBlock = styled.div`
@@ -90,15 +106,22 @@ export const StatusPill = styled.div<{ $tone: string }>`
 
 export const BodyContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  padding: 18px 20px 20px;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 export const MetaGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+  flex: 1;
 
   @media (max-width: 576px) {
     grid-template-columns: 1fr;
@@ -143,17 +166,18 @@ export const DateContainer = styled.div`
 
 export const TotalStrip = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   gap: 12px;
-  padding: 16px;
+  padding: 14px 16px;
   border-radius: 18px;
   background: #f3f7ff;
   border: 1px solid rgba(4, 36, 200, 0.08);
+  min-width: 180px;
 
-  @media (max-width: 576px) {
-    flex-direction: column;
-    align-items: flex-start;
+  @media (max-width: 992px) {
+    min-width: 0;
   }
 `;
 
@@ -186,7 +210,14 @@ export const ItemCount = styled.div`
 
 export const ButtonContainer = styled.div`
   display: flex;
+  min-width: 220px;
   gap: 10px;
+  justify-content: flex-end;
+
+  @media (max-width: 992px) {
+    min-width: 0;
+    width: 100%;
+  }
 
   @media (max-width: 576px) {
     flex-direction: column;

@@ -12,6 +12,7 @@ import { useGetAllOrdersStore } from "./stores";
 import { GetAllOrdersInput } from "./services/graphql";
 import { SearchBar } from "./components";
 import { useNavigate } from "react-router-dom";
+import * as S from "./styles";
 
 const History = () => {
   const navigate = useNavigate();
@@ -119,15 +120,17 @@ const History = () => {
 
     if (getAllOrdersResponse && Object.keys(getAllOrdersResponse).length > 0) {
       return (
-        <>
+        <S.ContentCard>
           <HistoryComp orders={orders} />
-          <CustomPagination
-            perPageCount={payload.limit}
-            totalPageCount={getAllOrdersResponse?.payload?.totalCount}
-            currentPage={payload?.skip / payload.limit + 1}
-            onPageChange={_onPageChange}
-          />
-        </>
+          <S.PaginationWrap>
+            <CustomPagination
+              perPageCount={payload.limit}
+              totalPageCount={getAllOrdersResponse?.payload?.totalCount}
+              currentPage={payload?.skip / payload.limit + 1}
+              onPageChange={_onPageChange}
+            />
+          </S.PaginationWrap>
+        </S.ContentCard>
       );
     }
 
@@ -136,7 +139,7 @@ const History = () => {
 
   if (checkAccessControl("history")) {
     return (
-      <>
+      <S.PageShell>
         <SearchBar
           payload={payload}
           setPayload={setPayload}
@@ -146,7 +149,7 @@ const History = () => {
         {_renderPage()}
         {_renderLoader()}
         {_renderError()}
-      </>
+      </S.PageShell>
     );
   }
 

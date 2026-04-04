@@ -27,6 +27,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useUpdateProductStore } from "./stores/updateProduct.store";
 import { useGetAllRecentProductsStore } from "../Recents/stores";
+import * as S from "./styles";
 const Products = () => {
   const [isRetailer, setIsRetailer] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(getUserDetails()?.id);
@@ -309,7 +310,7 @@ const Products = () => {
       const products = getAllProductsResponse?.payload?.products;
       if (products.length > 0) {
         return (
-          <>
+          <S.ContentCard>
             <ProductContainer
               products={products}
               categories={categories}
@@ -318,13 +319,15 @@ const Products = () => {
               deleteProduct={_deleteProduct}
               addRecent={_addRecent}
             />
-            <CustomPagination
-              perPageCount={12}
-              totalPageCount={getAllProductsResponse?.payload?.totalCount}
-              currentPage={payload?.skip / 12 + 1}
-              onPageChange={_onPageChange}
-            />
-          </>
+            <S.PaginationWrap>
+              <CustomPagination
+                perPageCount={12}
+                totalPageCount={getAllProductsResponse?.payload?.totalCount}
+                currentPage={payload?.skip / 12 + 1}
+                onPageChange={_onPageChange}
+              />
+            </S.PaginationWrap>
+          </S.ContentCard>
         );
       }
 
@@ -356,19 +359,21 @@ const Products = () => {
 
   if (checkAccessControl("products")) {
     return (
-      <>
-        <SearchBar
-          categories={categories}
-          addCategory={_addCategory}
-          setPayload={setPayload}
-          onSearchPress={_onSearchPress}
-          onSortPress={_onSortPress}
-          isRetailer={isRetailer}
-          addProduct={_addProduct}
-        />
-        {_renderPage()}
+      <S.PageShell>
+        <S.ToolbarSection>
+          <SearchBar
+            categories={categories}
+            addCategory={_addCategory}
+            setPayload={setPayload}
+            onSearchPress={_onSearchPress}
+            onSortPress={_onSortPress}
+            isRetailer={isRetailer}
+            addProduct={_addProduct}
+          />
+          {_renderPage()}
+        </S.ToolbarSection>
         {_renderLoader()}
-      </>
+      </S.PageShell>
     );
   }
 

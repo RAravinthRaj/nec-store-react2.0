@@ -12,9 +12,6 @@ import { HISTORY_CONFIG } from "../../config";
 import { Box, useMediaQuery } from "@mui/material";
 import { getItemInLocalStorage } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
-import { IoIosSearch } from "react-icons/io";
-import { PiShoppingCart } from "react-icons/pi";
-import { RxCross2 } from "react-icons/rx";
 
 export interface ISearchBar {
   payload: any;
@@ -84,19 +81,19 @@ export const SearchBar = ({
         onClick={() => {
           navigate("/carts");
         }}
-      >
-        <S.StyledBadge
-          badgeContent={cartItemsCount}
-          $bgColor={theme.colors.primary}
+        >
+          <S.StyledBadge
+            badgeContent={cartItemsCount}
+            $bgColor={theme.colors.primary}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",
-          }}
-          color="secondary"
-        >
-          <PiShoppingCart />
-        </S.StyledBadge>
-      </S.CartButton>
+            }}
+            color="secondary"
+          >
+            <S.CartIcon />
+          </S.StyledBadge>
+        </S.CartButton>
     );
   };
 
@@ -114,7 +111,7 @@ export const SearchBar = ({
           />
           {(payload.orderId || "").length > 0 && (
             <S.ClearButton title="clear" onClick={_clearSearch}>
-              <RxCross2 size={24} color="black" />
+              <S.ClearIcon />
             </S.ClearButton>
           )}
 
@@ -124,7 +121,7 @@ export const SearchBar = ({
               onSearchPress();
             }}
           >
-            <IoIosSearch size={25} />
+            <S.SearchIcon />
           </S.SearchButton>
         </S.InputWrapper>
         <S.SortContainer>{_renderSortedOptions()}</S.SortContainer>
@@ -134,10 +131,20 @@ export const SearchBar = ({
 
   const _renderActionItems = () => {
     return (
-      <S.ActionContainer>
-        {_renderSearchBar()}
-        {_renderFabButton()}
-      </S.ActionContainer>
+      <S.ToolbarCard>
+        <S.ToolbarCopy>
+          <S.ToolbarEyebrow>History Filters</S.ToolbarEyebrow>
+          <S.ToolbarTitle>Find any order in seconds.</S.ToolbarTitle>
+          <S.ToolbarSubtitle>
+            Search by order number, change timeline direction, and jump back to
+            cart from one refined control bar.
+          </S.ToolbarSubtitle>
+        </S.ToolbarCopy>
+        <S.ActionContainer>
+          {_renderSearchBar()}
+          {_renderFabButton()}
+        </S.ActionContainer>
+      </S.ToolbarCard>
     );
   };
 

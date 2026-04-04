@@ -193,6 +193,14 @@ export const CartComp = ({
                   ₹ {Number(item?.price ?? 0).toFixed(2)}
                 </S.InfoValue>
               </S.InfoCard>
+              <S.InfoCard>
+                <S.InfoLabel>Quantity</S.InfoLabel>
+                <S.InfoValue>{orderQuantity}</S.InfoValue>
+              </S.InfoCard>
+              <S.InfoCard>
+                <S.InfoLabel>Available</S.InfoLabel>
+                <S.InfoValue>{Number(item?.quantity ?? 0)}</S.InfoValue>
+              </S.InfoCard>
             </S.ItemInfoGrid>
 
             <S.ItemActionRow>
@@ -216,6 +224,10 @@ export const CartComp = ({
       <S.CartListHeader>
         <div>
           <S.CartListTitle>Cart Items</S.CartListTitle>
+          <S.CartListCaption>
+            Review quantity, unit price, and line totals before placing the
+            order.
+          </S.CartListCaption>
         </div>
         <S.CartMetaPill>
           <S.DownloadIcon />

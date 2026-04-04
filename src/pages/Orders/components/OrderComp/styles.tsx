@@ -7,23 +7,10 @@ Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 import styled from "styled-components";
 
 export const OrderContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-  margin: 30px 0;
-
-  @media (max-width: 1280px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 834px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 0 5px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 8px 0 6px;
 `;
 
 export const Divider = styled.div`

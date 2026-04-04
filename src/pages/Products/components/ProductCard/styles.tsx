@@ -5,38 +5,37 @@ import { LiaCartArrowDownSolid } from "react-icons/lia";
 import { FiPlus } from "react-icons/fi";
 import { theme } from "../../../../assets/Variables";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<{ $isRetailer?: boolean }>`
   width: 100%;
-  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
-  border-radius: 24px;
+  align-items: ${(props) => (props.$isRetailer ? "center" : "stretch")};
+  gap: 18px;
+  padding: ${(props) => (props.$isRetailer ? "12px 14px" : "14px")};
+  box-shadow: none;
+  border-radius: 16px;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.98) 0%,
-      rgba(247, 250, 255, 0.98) 100%
-    );
-  border: 1px solid rgba(4, 36, 200, 0.1);
-  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(4, 36, 200, 0.08);
   position: relative;
+  flex-direction: ${(props) => (props.$isRetailer ? "row" : "column")};
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 22px 44px rgba(4, 36, 200, 0.12);
+    transform: translateY(-2px);
+    box-shadow: none;
     border-color: rgba(4, 36, 200, 0.18);
+  }
+
+  @media (max-width: 992px) {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   @media (max-width: 576px) {
     padding: 12px;
-    border-radius: 20px;
+    border-radius: 18px;
 
     &:hover {
       transform: none;
@@ -45,26 +44,41 @@ export const CardContainer = styled.div`
   }
 `;
 
-export const ProductDetailContainer = styled.div`
+export const ProductDetailContainer = styled.div<{ $isRetailer?: boolean }>`
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: ${(props) => (props.$isRetailer ? "center" : "stretch")};
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  flex-direction: ${(props) => (props.$isRetailer ? "row" : "column")};
+
+  @media (max-width: 992px) {
+    align-items: flex-start;
+  }
 
   @media (max-width: 576px) {
-    gap: 12px;
+    gap: 10px;
+    flex-direction: column;
   }
 `;
 
-export const ImageSection = styled.div`
+export const ImageSection = styled.div<{ $isRetailer?: boolean }>`
   position: relative;
-  padding: 12px;
-  border-radius: 20px;
+  width: ${(props) => (props.$isRetailer ? "100px" : "100%")};
+  min-width: ${(props) => (props.$isRetailer ? "100px" : "0")};
+  padding: 8px;
+  border-radius: 12px;
   border: 1px solid rgba(4, 36, 200, 0.1);
-  background:
-    radial-gradient(circle at top, rgba(4, 36, 200, 0.12), transparent 42%),
-    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  background: #f8fafc;
+
+  @media (max-width: 992px) {
+    width: 100%;
+    min-width: 0;
+  }
 
   @media (max-width: 576px) {
+    width: 100%;
+    min-width: 0;
     padding: 8px;
     border-radius: 16px;
   }
@@ -75,36 +89,58 @@ export const TopMetaRow = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 
   @media (max-width: 576px) {
-    margin-bottom: 8px;
+    display: none;
   }
 `;
 
-export const ContentSection = styled.div`
+export const MetaBadge = styled.div<{ $variant?: "subtle" }>`
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: ${(props) =>
+    props.$variant === "subtle"
+      ? "rgba(255, 255, 255, 0.88)"
+      : "rgba(4, 36, 200, 0.88)"};
+  color: ${(props) => (props.$variant === "subtle" ? "#0f172a" : "white")};
+  border: 1px solid
+    ${(props) =>
+      props.$variant === "subtle"
+        ? "rgba(15, 23, 42, 0.08)"
+        : "rgba(4, 36, 200, 0.16)"};
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+`;
+
+export const ContentSection = styled.div<{ $isRetailer?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
 
   @media (max-width: 576px) {
     gap: 8px;
   }
 `;
 
-export const ImageContainer = styled.div`
+export const ImageContainer = styled.div<{ $isRetailer?: boolean }>`
   width: 100%;
-  height: 176px;
+  height: ${(props) => (props.$isRetailer ? "82px" : "168px")};
   display: flex;
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 1024px) {
-    height: 164px;
+  @media (max-width: 992px) {
+    height: 130px;
   }
 
   @media (max-width: 576px) {
-    height: 150px;
+    height: ${(props) => (props.$isRetailer ? "102px" : "138px")};
   }
 `;
 
@@ -121,8 +157,8 @@ export const Image = styled.img`
 
 export const TitleContainer = styled.h3`
   text-align: left;
-  font-size: 19px;
-  line-height: 1.35;
+  font-size: 18px;
+  line-height: 1.3;
   margin: 0;
   min-width: 0;
   flex: 1;
@@ -132,12 +168,13 @@ export const TitleContainer = styled.h3`
   -webkit-box-orient: vertical;
   line-clamp: 2;
   word-break: break-word;
-  min-height: calc(1.32em * 2);
+  min-height: auto;
   color: #0f172a;
 
   @media (max-width: 576px) {
     font-size: 16px;
-    min-height: calc(1.32em * 2);
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 `;
 
@@ -149,7 +186,9 @@ export const TitleRow = styled.div`
   min-width: 0;
 
   @media (max-width: 576px) {
-    gap: 8px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 `;
 
@@ -184,7 +223,7 @@ export const PriceSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-  padding-top: 4px;
+  padding-top: 2px;
 `;
 
 export const PriceLabel = styled.span`
@@ -196,26 +235,46 @@ export const PriceLabel = styled.span`
 `;
 
 export const HighlightPrice = styled.span`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: ${theme.colors.primary};
   letter-spacing: -0.03em;
 
   @media (max-width: 576px) {
-    font-size: 22px;
+    font-size: 20px;
   }
+`;
+
+export const CustomerMetaRow = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const CustomerAvailability = styled.div<{ $isLowStock: boolean }>`
+  flex-shrink: 0;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: ${(props) => (props.$isLowStock ? "#b91c1c" : "#166534")};
+  background: ${(props) =>
+    props.$isLowStock ? "rgba(239, 68, 68, 0.12)" : "rgba(34, 197, 94, 0.12)"};
 `;
 
 export const MetaRow = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
   width: 100%;
   padding-top: 2px;
 
   @media (max-width: 576px) {
-    gap: 8px;
+    padding-top: 0;
   }
 `;
 
@@ -246,6 +305,18 @@ export const QuantityContainer = styled.h5`
 export const QuantityValue = styled.span`
   color: #0f172a;
   font-weight: 800;
+`;
+
+export const AuxiliaryText = styled.span`
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 140px;
+  text-align: right;
+
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 
 export const RetailerQuantityText = styled.div`
@@ -284,17 +355,21 @@ export const RupeeContainer = styled.h5`
 `;
 
 export const RetailerPriceCard = styled.div`
-  width: 100%;
+  width: 240px;
   display: flex;
   align-items: stretch;
   gap: 10px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  background: #f8fafc;
   border: 1px solid rgba(4, 36, 200, 0.1);
 
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+
   @media (max-width: 576px) {
-    flex-direction: column;
+    display: none;
   }
 `;
 
@@ -326,17 +401,33 @@ export const RetailerPriceValue = styled.span<{ $isSellingPrice?: boolean }>`
   }
 `;
 
+export const RetailerPriceHint = styled.span`
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+`;
+
 export const RetailerPriceDivider = styled.div`
   width: 1px;
   background: rgba(148, 163, 184, 0.28);
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div<{ $isRetailer?: boolean }>`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   gap: 10px;
-  margin-top: 16px;
+  width: ${(props) => (props.$isRetailer ? "220px" : "100%")};
+  margin-left: auto;
+
+  @media (max-width: 992px) {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 `;
 
 export const Button = styled.button<{ $bgColor: string; $canAdd: boolean }>`
@@ -344,7 +435,7 @@ export const Button = styled.button<{ $bgColor: string; $canAdd: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 10px;
+  padding: 11px 12px;
   background: ${(props) => (props.$canAdd ? props.$bgColor : "#cbd5e1")};
   opacity: ${(props) => (props.$canAdd ? 1 : 0.5)};
   pointer-events: ${(props) => (props.$canAdd ? "default" : "none")};
@@ -375,6 +466,7 @@ export const Button = styled.button<{ $bgColor: string; $canAdd: boolean }>`
     gap: 6px;
     padding: 10px;
     border-radius: 10px;
+    min-height: 38px;
   }
 `;
 

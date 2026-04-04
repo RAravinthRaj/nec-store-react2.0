@@ -47,7 +47,7 @@ export const PageContainer = styled.div`
 
 export const TopBar = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   margin-bottom: 22px;
 `;
@@ -112,6 +112,41 @@ export const PageSubtitle = styled.p`
   }
 `;
 
+export const HeaderStats = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 26px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const StatCard = styled.div`
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+`;
+
+export const StatLabel = styled.div`
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+export const StatValue = styled.div`
+  margin-top: 10px;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+`;
+
 export const LayoutGrid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(300px, 0.9fr);
@@ -161,7 +196,7 @@ export const SectionCard = styled.div`
 export const CartContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
 `;
 
 export const CartListHeader = styled.div`
@@ -351,10 +386,10 @@ export const ItemInfoGrid = styled.div`
 
 export const InfoCard = styled.div`
   min-width: 120px;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  border: none;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.14);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -387,6 +422,7 @@ export const ItemActionRow = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 `;
 

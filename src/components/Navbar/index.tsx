@@ -87,40 +87,40 @@ export const Navbar = ({ menu, onToggleMenu, showHamburgerIcon }: INavbar) => {
   };
 
   const _renderTitle = () => {
-    if (!isMobile) {
-      return (
-        <S.TitleContainer>
-          <Link to="/">
-            <S.Logo
-              src={theme.images.logo}
-              $isProfilePage={showHamburgerIcon}
-            />
-          </Link>
-          <S.TitleText>{NAVBAR_CONFIG.title}</S.TitleText>
-        </S.TitleContainer>
-      );
-    }
-
-    if (!showHamburgerIcon) {
-      return (
-        <Link to="/">
-          <S.Logo src={theme.images.logo} $isProfilePage={!showHamburgerIcon} />
-        </Link>
-      );
-    }
-
-    return <S.Icon onClick={_toggleMenu} $bgColor={theme.colors.primary} />;
+    return (
+      <S.BrandGroup>
+        {showHamburgerIcon && (
+          <S.MenuButton
+            type="button"
+            onClick={_toggleMenu}
+            aria-label="Open navigation menu"
+            $bgColor={theme.colors.primary}
+          >
+            <S.Icon $bgColor={theme.colors.primary} />
+          </S.MenuButton>
+        )}
+        <S.BrandLink to="/">
+          <S.Logo
+            src={theme.images.logo}
+            $isProfilePage={showHamburgerIcon}
+          />
+          <S.BrandTextWrap>
+            <S.BrandEyebrow>Campus Store</S.BrandEyebrow>
+            <S.TitleText>{NAVBAR_CONFIG.title}</S.TitleText>
+          </S.BrandTextWrap>
+        </S.BrandLink>
+      </S.BrandGroup>
+    );
   };
 
   const _renderUserName = () => {
     const firstName = userData?.name?.split(" ")[0] ?? "";
     if (!isMobile && firstName) {
       return (
-        <>
-          <S.UserName
-            $bgColor={theme.colors.primary}
-          >{`Hii, ${firstName} !!`}</S.UserName>
-        </>
+        <S.UserMeta>
+          <S.UserMetaLabel>Signed in</S.UserMetaLabel>
+          <S.UserName $bgColor={theme.colors.primary}>{firstName}</S.UserName>
+        </S.UserMeta>
       );
     }
     return null;
@@ -186,21 +186,35 @@ export const Navbar = ({ menu, onToggleMenu, showHamburgerIcon }: INavbar) => {
   );
 
   const _recentViewed = () => {
-    if (getUserDetails()?.role === "customer") {
+    if (!isMobile && getUserDetails()?.role === "customer") {
       return <Recent />;
     }
+  };
+
+  const _renderQuickActions = () => {
+    if (isMobile) {
+      return null;
+    }
+
+    return (
+      <>
+        <Notification />
+        {_recentViewed()}
+      </>
+    );
   };
 
   return (
     <AppBar position="fixed" sx={{ zIndex: 30 }}>
       <S.NavbarContainer $bgColor={theme.colors.secondaryOptional}>
-        <S.TitleContainer>{_renderTitle()}</S.TitleContainer>
-        <S.UserContainer>
-          {_renderDropDown()}
-          {_renderUserName()}
-          <Notification />
-          {_recentViewed()}
-        </S.UserContainer>
+        <S.NavbarInner>
+          <S.TitleContainer>{_renderTitle()}</S.TitleContainer>
+          <S.UserContainer>
+            {_renderDropDown()}
+            {_renderUserName()}
+            {_renderQuickActions()}
+          </S.UserContainer>
+        </S.NavbarInner>
       </S.NavbarContainer>
     </AppBar>
   );

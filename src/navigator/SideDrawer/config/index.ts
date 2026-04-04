@@ -9,6 +9,15 @@ import { theme } from "../../../assets/Variables";
 
 export const SIDE_DRAWER_CONFIG = {
   title: "NEC STORE",
+  descriptions: {
+    products: "Browse and manage the product catalog",
+    "add-stock": "Update stock levels and pricing",
+    orders: "Track and process incoming orders",
+    sales: "Review sales movement and reports",
+    transactions: "Inspect payment and transaction logs",
+    history: "See completed customer purchases",
+    users: "Manage customer and user records",
+  },
   Actions: [
     {
       id: "products",

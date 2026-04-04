@@ -52,6 +52,15 @@ const Carts = () => {
 
   const navigate = useNavigate();
 
+  const _goBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+
+    navigate("/products");
+  };
+
   useEffect(() => {
     setPayload((prev) => ({
       ...prev,
@@ -289,13 +298,13 @@ const Carts = () => {
         <S.PageShell>
           <S.PageContainer>
             <S.TopBar>
-              <S.PreviousPageLink
-                onClick={() => {
-                  navigate(-1);
-                }}
-              />
+              <S.PreviousPageLink onClick={_goBack} title="Go back" />
               <S.HeaderContent>
-                <S.Eyebrow>Customer Cart</S.Eyebrow>
+                <S.Eyebrow>Shopping Cart</S.Eyebrow>
+                <S.PageTitle>Review your items</S.PageTitle>
+                <S.PageSubtitle>
+                  Update quantities or go back and continue shopping anytime.
+                </S.PageSubtitle>
               </S.HeaderContent>
             </S.TopBar>
 
@@ -346,7 +355,8 @@ const Carts = () => {
         <Error
           title="No Items Found"
           subtitle="Your cart is currently empty."
-          buttonTitle="Explore Products"
+          buttonTitle="Go Back"
+          onPress={_goBack}
         />
       );
     }

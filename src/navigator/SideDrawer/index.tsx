@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { SIDE_DRAWER_ROLE_MANAGEMENT } from "../../config";
 import { getUserDetails } from "../../utils";
 import { useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 export interface ISideDrawer {
   menu: boolean;
@@ -24,6 +25,8 @@ export const SideDrawer = ({ menu, toggleMenu }: ISideDrawer) => {
   const isMobile = useIsNotDesktop();
   const navigate = useNavigate();
   const [actions, setActions] = useState<any>([]);
+  const userDetails = getUserDetails();
+  const desktopDrawerWidth = menu ? 240 : 72;
 
   useEffect(() => {
     const syncActions = () => {
@@ -60,53 +63,64 @@ export const SideDrawer = ({ menu, toggleMenu }: ISideDrawer) => {
   };
 
   const _renderHeaderSM = () => {
-    if (isMobile) {
-      return (
-        <div>
-          <S.Item>
-            <S.Logo
-              src={theme.images.logo}
-              onClick={() => {
-                navigate("/");
-              }}
-            />
-            <S.Title>{SIDE_DRAWER_CONFIG.title}</S.Title>
-          </S.Item>
-          <S.Divider />
-        </div>
-      );
-    }
+    return (
+      <S.DrawerHeader>
+        <S.HeaderTop>
+          {isMobile ? (
+            <S.CloseButton type="button" onClick={handleCloseMenu}>
+              <IoClose />
+            </S.CloseButton>
+          ) : (
+            <S.HeaderSpacer />
+          )}
+        </S.HeaderTop>
+        {menu && (
+          <S.HeaderMeta>
+            <S.UserName>{userDetails?.name || "Guest User"}</S.UserName>
+            <S.RolePill>{userDetails?.role || "user"}</S.RolePill>
+          </S.HeaderMeta>
+        )}
+      </S.DrawerHeader>
+    );
   };
 
   const _renderNavigationList = () => {
     if (actions && actions.length > 0) {
       return (
-        <S.CustomList>
-          {_renderHeaderSM()}
+        <S.CustomList $collapsed={!menu}>
+          {menu ? _renderHeaderSM() : null}
           {actions?.map((item: any) => (
             <div key={item.id}>
               <S.ItemContainer
                 $hoverBgColor={theme.colors.primary}
+                $collapsed={!menu}
                 disablePadding
               >
                 <S.SideDrawerLink
                   to={item.link}
+                  $collapsed={!menu}
                   style={({ isActive }) => ({
                     color: isActive ? theme.colors.primary : "inherit",
                     display: "block",
                     width: "100%",
                   })}
                 >
-                  <S.Item>
+                  <S.Item $collapsed={!menu}>
                     <S.Icon
                       $bgColor={theme.colors.primary}
                       src={item.imageSrc}
                     />
-                    <S.ItemText primary={item.title} />
+                    {menu ? (
+                      <S.ItemContent>
+                        <S.ItemText primary={item.title} />
+                        <S.ItemHint>
+                          {SIDE_DRAWER_CONFIG.descriptions[item.id] || "Open page"}
+                        </S.ItemHint>
+                      </S.ItemContent>
+                    ) : null}
                   </S.Item>
                 </S.SideDrawerLink>
               </S.ItemContainer>
-              <S.Divider />
             </div>
           ))}
         </S.CustomList>
@@ -133,8 +147,9 @@ export const SideDrawer = ({ menu, toggleMenu }: ISideDrawer) => {
           slotProps={{
             paper: {
               style: {
-                width: "62%",
-                backgroundColor: theme.colors.secondaryBackGround,
+                width: "84%",
+                maxWidth: "340px",
+                backgroundColor: "#cfdbff",
               },
             },
           }}
@@ -152,16 +167,21 @@ export const SideDrawer = ({ menu, toggleMenu }: ISideDrawer) => {
       slotProps={{
         paper: {
           style: {
-            width: "240px",
-            marginTop: "73px",
+            width: `${desktopDrawerWidth}px`,
+            marginTop: "78px",
             zIndex: 0,
-            backgroundColor: theme.colors.secondaryBackGround,
+            backgroundColor: "#cfdbff",
+            borderRight: "1px solid rgba(4, 36, 200, 0.12)",
+            transition: "width 0.24s ease",
+            overflowX: "hidden",
           },
         },
       }}
       sx={{
-        width: 240,
+        width: desktopDrawerWidth,
         zIndex: 0,
+        flexShrink: 0,
+        transition: "width 0.24s ease",
       }}
     >
       <Box sx={{ overflow: "auto" }}>{_renderDrawer()}</Box>

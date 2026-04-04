@@ -11,30 +11,125 @@ import { Dropdown } from "react-bootstrap";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { ImSortAlphaAsc } from "react-icons/im";
 import Badge from "@mui/material/Badge";
+import { IoIosSearch } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import { PiShoppingCart } from "react-icons/pi";
+
+export const ToolbarCard = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+`;
+
+export const ToolbarHeader = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(230px, 0.8fr);
+  gap: 18px;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+export const ToolbarCopy = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ToolbarEyebrow = styled.span`
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(4, 36, 200, 0.08);
+  color: #0424c8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+export const ToolbarTitle = styled.h2`
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+`;
+
+export const ToolbarSubtitle = styled.p`
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.7;
+`;
+
+export const UtilityPanel = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+`;
+
+export const UtilityMetric = styled.div`
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+`;
+
+export const UtilityLabel = styled.div`
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+export const UtilityValue = styled.div`
+  margin-top: 10px;
+  color: #0f172a;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+`;
 
 export const ActionItem = styled.div`
   display: flex;
-  flex: 1.5;
+  flex: 1;
   justify-content: center;
+  min-width: 0;
 
   @media (max-width: 576px) {
-    margin: 0 7px;
     justify-content: center;
     flex: 1;
-    margin-top: 10px;
   }
 `;
 
 export const ActionContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    flex-direction: row;
+    align-items: center;
+  }
 
   @media (max-width: 576px) {
-    margin: 0;
-    justify-content: center;
-    font-size: 12px;
-    gap: 8px;
+    gap: 10px;
   }
 `;
 
@@ -64,26 +159,27 @@ export const ClearButton = styled.button`
 `;
 
 export const InputWrapper = styled.div<{ $bgColor: string }>`
-  flex: 8;
-  height: 50px;
-  border-radius: 7px;
-  padding: 10px 20px;
+  flex: 1;
+  height: 58px;
+  border-radius: 18px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  border: solid 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+  box-shadow: none;
 
   @media (max-width: 768px) {
     flex: 1;
-    height: 45px;
+    height: 52px;
     width: 100%;
   }
 
   @media (max-width: 576px) {
     flex: 1;
     padding: 6px 10px;
-    height: 40px;
-    border-radius: 5px;
+    height: 42px;
+    border-radius: 12px;
     width: 100%;
     margin: 0;
   }
@@ -92,18 +188,15 @@ export const InputWrapper = styled.div<{ $bgColor: string }>`
 export const SortContainer = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
+  flex: 0 0 auto;
   justify-content: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     justify-content: flex-end;
-    flex: 0.09;
   }
 
   @media (max-width: 576px) {
-    flex: 0.1;
     justify-content: flex-end;
-    margin-left: 8px;
   }
 `;
 
@@ -111,7 +204,7 @@ export const SortIcon = styled(ImSortAlphaAsc)<{
   $bgColor: string;
 }>`
   color: black;
-  font-size: 30px;
+  font-size: clamp(20px, 2vw, 30px);
 
   @media (max-width: 768px) {
     align-self: flex-end;
@@ -152,29 +245,45 @@ export const SortedDropdownItem = styled(Dropdown.Item)<{ $bgColor: string }>`
 `;
 
 export const ButtonContainer = styled.div`
-  flex: 0.8;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  margin-left: 10px;
+  gap: 12px;
+
+  @media (max-width: 900px) {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 
 export const Button = styled.button<{ $bgColor: string }>`
-  flex: 1;
+  min-width: 180px;
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 14px 18px;
   justify-content: center;
-  border: none;
-  background-color: ${(props) => props?.$bgColor};
-  border-radius: 5px;
+  border: 1px solid transparent;
+  background: ${(props) => props?.$bgColor};
+  border-radius: 16px;
   gap: 10px;
   color: white;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: none;
+
+  @media (max-width: 900px) {
+    flex: 1;
+  }
 
   @media (max-width: 576px) {
-    padding: 5px 0;
-    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 13px 16px;
   }
 `;
 
@@ -233,14 +342,14 @@ export const FabDivider = styled.div`
 `;
 
 export const CustomToggle = styled(Dropdown.Toggle)<{ $bgColor: string }>`
-  background: none;
+  background: rgba(248, 250, 252, 0.92);
   border: none;
   display: flex;
   align-items: center;
   gap: 7px;
-
-  padding: 0;
-  margin: 0;
+  padding: 10px 12px;
+  margin: 0 8px 0 0;
+  border-radius: 14px;
   --bs-btn-active-bg: none;
   --bs-btn-hover-bg: none;
 
@@ -255,11 +364,12 @@ export const DropDownIcon = styled(SlArrowDown)<{
   $bgColor: string;
 }>`
   color: black;
-  font-size: 13px;
+  font-size: clamp(10px, 0.9vw, 13px);
 `;
 
 export const IconText = styled.div<{ $bgColor: string }>`
   color: ${(props) => props.$bgColor};
+  font-size: clamp(12px, 0.95vw, 14px);
 
   @media (max-width: 576px) {
     font-size: 13px;
@@ -268,6 +378,9 @@ export const IconText = styled.div<{ $bgColor: string }>`
 
 export const CategoryDropDownMenu = styled(Dropdown.Menu)`
   margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
 
   @media (max-width: 576px) {
     font-size: 14px;
@@ -352,8 +465,29 @@ export const StyledMenuItem = styled(MenuItem)`
 `;
 
 export const SearchButton = styled.button`
-  background-color: white;
+  width: clamp(32px, 2.8vw, 40px);
+  height: clamp(32px, 2.8vw, 40px);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   border: none;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 576px) {
+    width: 32px;
+    height: 32px;
+  }
+`;
+
+export const SearchIcon = styled(IoIosSearch)`
+  font-size: clamp(17px, 1.45vw, 22px);
+`;
+
+export const ClearIcon = styled(RxCross2)`
+  color: black;
+  font-size: clamp(17px, 1.45vw, 22px);
 `;
 
 export const StyledBadge = styled(Badge)<{ $bgColor: string }>`
@@ -385,7 +519,7 @@ export const CartButton = styled(IconButton)`
   width: 45px;
   height: 45px;
   background: linear-gradient(145deg, #ffffff, #f5f5f5);
-  border: 2px solid #000000 !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
   border-radius: 50%;
   padding: 10px;
   display: flex;
@@ -406,10 +540,14 @@ export const CartButton = styled(IconButton)`
   }
 
   svg {
-    font-size: 26px;
+    font-size: clamp(18px, 1.8vw, 26px);
     color: #1a1a1a;
     transition:
       color 0.25s ease,
       filter 0.25s ease;
   }
+`;
+
+export const CartActionIcon = styled(PiShoppingCart)`
+  font-size: clamp(18px, 1.8vw, 26px);
 `;

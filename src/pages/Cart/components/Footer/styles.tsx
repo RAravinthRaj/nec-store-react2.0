@@ -19,6 +19,16 @@ export const FooterBox = styled.div<{ $bgColor: string }>`
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
   position: sticky;
   top: 112px;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ffb547, ${theme.colors.primary});
+  }
 
   @media (max-width: 992px) {
     position: static;
@@ -142,6 +152,7 @@ export const FooterHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding-top: 4px;
 `;
 
 export const FooterTitle = styled.h3`
@@ -205,6 +216,10 @@ export const FooterContent = styled.div`
   color: #64748b;
   font-size: 13px;
   line-height: 1.5;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.14);
 `;
 
 export const Button = styled.button<{ $bgColor: string }>`

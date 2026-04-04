@@ -20,18 +20,26 @@ export const PageContainer = ({
   showSideBar,
   showHamburgerIcon,
 }: IPageContainer) => {
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return !window.matchMedia("(max-width: 768px)").matches;
+  });
 
   if (showSideBar) {
     return (
       <S.MainContainer>
         <Navbar
           menu={menu}
-          onToggleMenu={() => setMenu(!menu)}
+          onToggleMenu={setMenu}
           showHamburgerIcon={showHamburgerIcon}
         />
         <SideDrawer menu={menu} toggleMenu={() => setMenu(!menu)} />
-        <S.StyledPageBox>{children}</S.StyledPageBox>
+        <S.StyledPageBox $hasSidebar $sidebarOpen={menu}>
+          {children}
+        </S.StyledPageBox>
       </S.MainContainer>
     );
   }
@@ -40,7 +48,7 @@ export const PageContainer = ({
     <S.MainContainer>
       <Navbar
         menu={menu}
-        onToggleMenu={() => setMenu(!menu)}
+        onToggleMenu={setMenu}
         showHamburgerIcon={showHamburgerIcon}
       />
       <S.StyledPageBox>{children}</S.StyledPageBox>

@@ -14,8 +14,6 @@ import { AddCategoryModal } from "../AddCategory";
 import { PRODUCTS_CONFIG } from "../../config";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { IoIosSearch } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
 import { AddProductInput } from "../../services/graphql";
 import { getItemInLocalStorage } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
@@ -193,7 +191,7 @@ export const SearchBar = ({
             }}
             color="secondary"
           >
-            <PiShoppingCart />
+            <S.CartActionIcon />
           </S.StyledBadge>
         </S.CartButton>
       );
@@ -213,7 +211,7 @@ export const SearchBar = ({
           />
           {searchValue.length > 0 && (
             <S.ClearButton title="clear" onClick={_clearSearch}>
-              <RxCross2 size={24} color="black" />
+              <S.ClearIcon />
             </S.ClearButton>
           )}
           <S.SearchButton
@@ -222,7 +220,7 @@ export const SearchBar = ({
               onSearchPress();
             }}
           >
-            <IoIosSearch size={25} />
+            <S.SearchIcon />
           </S.SearchButton>
         </S.InputWrapper>
         <S.SortContainer>{_renderSortedOptions()}</S.SortContainer>
@@ -232,10 +230,12 @@ export const SearchBar = ({
 
   const _renderActionItems = () => {
     return (
-      <S.ActionContainer>
-        {_renderSearchBar()}
-        {_renderTopButton()}
-      </S.ActionContainer>
+      <S.ToolbarCard>
+        <S.ActionContainer>
+          {_renderSearchBar()}
+          {_renderTopButton()}
+        </S.ActionContainer>
+      </S.ToolbarCard>
     );
   };
 
