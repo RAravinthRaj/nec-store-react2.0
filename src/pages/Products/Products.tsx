@@ -4,7 +4,7 @@ Unauthorized copying of this file, via any medium, is strictly prohibited.
 Proprietary and confidential.  
 Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProductContainer, SearchBar } from "./components";
 import {
   useAddCategoryStore,
@@ -14,7 +14,7 @@ import {
   useAddRecentStore,
   useDeleteProductStore,
 } from "./stores";
-import { toast } from "react-toastify";
+import { Id, toast } from "react-toastify";
 import { CustomPagination, Loader, Error } from "../../components";
 import { checkAccessControl, getUserDetails } from "../../utils";
 import { ROLES } from "../../config";
@@ -31,6 +31,7 @@ import * as S from "./styles";
 const Products = () => {
   const [isRetailer, setIsRetailer] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(getUserDetails()?.id);
+  const mutationToastIdRef = useRef<Id | null>(null);
   const navigate = useNavigate();
 
   const [payload, setPayload] = useState({
@@ -119,24 +120,38 @@ const Products = () => {
     fetchGetAllProducts(payload);
   }, [payload.categoryId]);
 
+  const _showPendingToast = (message: string) => {
+    mutationToastIdRef.current = toast.loading(message);
+  };
+
+  const _resolvePendingToast = (type: "success" | "error", message: string) => {
+    if (mutationToastIdRef.current !== null) {
+      toast.update(mutationToastIdRef.current, {
+        render: message,
+        type,
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
+      mutationToastIdRef.current = null;
+      return;
+    }
+
+    toast[type](message);
+  };
+
   useEffect(() => {
     if (addCategoryResponse && Object.keys(addCategoryResponse).length > 0) {
       resetAddCategory();
       fetchGetAllCategories();
-
-      setTimeout(() => {
-        toast.success("Category Added Successfully !!");
-      }, 1000);
+      _resolvePendingToast("success", "Category Added Successfully !!");
     }
   }, [addCategoryResponse, fetchGetAllCategories, resetAddCategory]);
 
   useEffect(() => {
     if (addCategoryError && Object.keys(addCategoryError).length > 0) {
       resetAddCategory();
-
-      setTimeout(() => {
-        toast.error(addCategoryError);
-      }, 1000);
+      _resolvePendingToast("error", addCategoryError);
     }
   }, [addCategoryError, resetAddCategory]);
 
@@ -144,20 +159,14 @@ const Products = () => {
     if (addProductResponse && Object.keys(addProductResponse).length > 0) {
       resetAddProduct();
       fetchGetAllProducts(payload);
-
-      setTimeout(() => {
-        toast.success("Product Added Successfully !!");
-      }, 1000);
+      _resolvePendingToast("success", "Product Added Successfully !!");
     }
   }, [addProductResponse, fetchGetAllProducts, resetAddProduct]);
 
   useEffect(() => {
     if (addProductError && Object.keys(addProductError).length > 0) {
       resetAddProduct();
-
-      setTimeout(() => {
-        toast.error(addProductError);
-      }, 1000);
+      _resolvePendingToast("error", addProductError);
     }
   }, [addProductError, resetAddProduct]);
 
@@ -168,22 +177,17 @@ const Products = () => {
     ) {
       resetUpdateProduct();
       fetchGetAllProducts(payload);
-
-      setTimeout(() => {
-        toast.success(
-          updateProductResponse?.payload?.data || "Product Updated Successfully !!",
-        );
-      }, 1000);
+      _resolvePendingToast(
+        "success",
+        updateProductResponse?.payload?.data || "Product Updated Successfully !!",
+      );
     }
   }, [updateProductResponse, fetchGetAllProducts, resetUpdateProduct]);
 
   useEffect(() => {
     if (updateProductError && Object.keys(updateProductError).length > 0) {
       resetUpdateProduct();
-
-      setTimeout(() => {
-        toast.error(updateProductError);
-      }, 1000);
+      _resolvePendingToast("error", updateProductError);
     }
   }, [updateProductError, resetUpdateProduct]);
 
@@ -208,22 +212,17 @@ const Products = () => {
     if (deleteProductResponse && Object.keys(deleteProductResponse).length > 0) {
       resetDeleteProduct();
       fetchGetAllProducts(payload);
-
-      setTimeout(() => {
-        toast.success(
-          deleteProductResponse?.payload?.data || "Product deleted successfully.",
-        );
-      }, 1000);
+      _resolvePendingToast(
+        "success",
+        deleteProductResponse?.payload?.data || "Product deleted successfully.",
+      );
     }
   }, [deleteProductResponse, fetchGetAllProducts, resetDeleteProduct]);
 
   useEffect(() => {
     if (deleteProductError && Object.keys(deleteProductError).length > 0) {
       resetDeleteProduct();
-
-      setTimeout(() => {
-        toast.error(deleteProductError);
-      }, 1000);
+      _resolvePendingToast("error", deleteProductError);
     }
   }, [deleteProductError, resetDeleteProduct]);
 
@@ -275,14 +274,17 @@ const Products = () => {
   };
 
   const _addCategory = (name: string) => {
+    _showPendingToast("Adding category...");
     return fetchAddCategory(name);
   };
 
   const _addProduct = (args: AddProductInput) => {
+    _showPendingToast("Adding product...");
     return fetchAddProduct(args);
   };
 
   const _UpdateProduct = (args: UpdateProductInput) => {
+    _showPendingToast("Updating product...");
     return fetchUpdateProduct(args);
   };
 
@@ -291,6 +293,7 @@ const Products = () => {
   };
 
   const _deleteProduct = (args: DeleteProductInput) => {
+    _showPendingToast("Deleting product...");
     return fetchDeleteProduct(args);
   };
 

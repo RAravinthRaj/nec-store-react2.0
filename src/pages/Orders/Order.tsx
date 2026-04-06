@@ -4,7 +4,7 @@ Unauthorized copying of this file, via any medium, is strictly prohibited.
 Proprietary and confidential.  
 Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 */
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { CustomPagination, Error, Loader } from "../../components";
 import { checkAccessControl } from "../../utils";
 import { OrderComp, SearchBar } from "./components";
@@ -15,7 +15,7 @@ import {
 } from "./stores";
 import { GetAllOrdersInput } from "./services/graphql";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Id, toast } from "react-toastify";
 import * as S from "./styles";
 
 const Orders = () => {
@@ -47,6 +47,8 @@ const Orders = () => {
 
   const [orders, setOrders] = useState([]);
   const [cancelTriggered, setCancelTriggered] = useState(false);
+  const cancelToastIdRef = useRef<Id | null>(null);
+  const updateToastIdRef = useRef<Id | null>(null);
 
   const [payload, setPayload] = useState<GetAllOrdersInput>({
     skip: 0,
@@ -68,13 +70,40 @@ const Orders = () => {
     }
   }, [getAllOrdersResponse]);
 
+  const _showPendingToast = (
+    ref: MutableRefObject<Id | null>,
+    message: string,
+  ) => {
+    ref.current = toast.loading(message);
+  };
+
+  const _resolvePendingToast = (
+    ref: MutableRefObject<Id | null>,
+    type: "success" | "error",
+    message: string,
+  ) => {
+    if (ref.current !== null) {
+      toast.update(ref.current, {
+        render: message,
+        type,
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
+      ref.current = null;
+      return;
+    }
+
+    toast[type](message);
+  };
+
   useEffect(() => {
     if (
       cancelTriggered &&
       cancelOrderResponse &&
       Object.keys(cancelOrderResponse).length > 0
     ) {
-      toast.success("Order Canceled");
+      _resolvePendingToast(cancelToastIdRef, "success", "Order Canceled");
 
       resetGetAllOrders();
       fetchGetAllOrders(payload);
@@ -85,7 +114,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (updateOrderResponse && Object.keys(updateOrderResponse).length > 0) {
-      toast.success("Order Updated");
+      _resolvePendingToast(updateToastIdRef, "success", "Order Updated");
       fetchGetAllOrders({
         ...payload,
       });
@@ -95,7 +124,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (updateOrderError && Object.keys(updateOrderError).length > 0) {
-      toast.error(updateOrderError);
+      _resolvePendingToast(updateToastIdRef, "error", updateOrderError);
 
       resetUpdateOrder();
     }
@@ -103,7 +132,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (cancelOrderError) {
-      toast.error(cancelOrderError);
+      _resolvePendingToast(cancelToastIdRef, "error", cancelOrderError);
       resetCancelOrder();
     }
   }, [cancelOrderError]);
@@ -154,6 +183,7 @@ const Orders = () => {
   };
 
   const _cancelOrder = (orderId: string) => {
+    _showPendingToast(cancelToastIdRef, "Canceling order...");
     fetchCancelOrder(orderId);
     setCancelTriggered(true);
   };
@@ -163,6 +193,7 @@ const Orders = () => {
     deliveryStatus?: string,
     paidStatus?: string
   ) => {
+    _showPendingToast(updateToastIdRef, "Updating order...");
     fetchUpdateOrder(orderId, paidStatus, deliveryStatus);
   };
 

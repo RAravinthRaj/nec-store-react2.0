@@ -4,13 +4,13 @@ Unauthorized copying of this file, via any medium, is strictly prohibited.
 Proprietary and confidential.  
 Written by Aravinth Raj R <aravinthr235@gmail.com>, 2025.
 */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ContainerComp } from "./components";
 import { useGetUserStore, useUpdateUserStore } from "./stores";
 import { Error, Loader } from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkAccessControl, fetchSessionUser } from "../../utils";
-import { toast } from "react-toastify";
+import { Id, toast } from "react-toastify";
 
 const Profile = () => {
   const location = useLocation();
@@ -18,6 +18,7 @@ const Profile = () => {
   const userId = location.state?.id;
 
   const navigate = useNavigate();
+  const updateToastIdRef = useRef<Id | null>(null);
 
   const { getUserResponse, getUserError, fetchGetUser, resetGetUser } =
     useGetUserStore();
@@ -44,6 +45,26 @@ const Profile = () => {
     fetchGetUser(userId);
   };
 
+  const _showPendingToast = (message: string) => {
+    updateToastIdRef.current = toast.loading(message);
+  };
+
+  const _resolvePendingToast = (type: "success" | "error", message: string) => {
+    if (updateToastIdRef.current !== null) {
+      toast.update(updateToastIdRef.current, {
+        render: message,
+        type,
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
+      updateToastIdRef.current = null;
+      return;
+    }
+
+    toast[type](message);
+  };
+
   useEffect(() => {
     if (updateUserResponse && Object.keys(updateUserResponse).length > 0) {
       resetUpdateUser();
@@ -52,17 +73,14 @@ const Profile = () => {
       if (prevPage === "navbar") {
         void fetchSessionUser();
       }
-
-      setTimeout(() => {
-        toast.success("User Updated Successfully !!");
-      }, 1000);
+      _resolvePendingToast("success", "User Updated Successfully !!");
     }
   }, [updateUserResponse, prevPage, resetUpdateUser]);
 
   useEffect(() => {
     if (updateUserError && updateUserError.length > 0) {
       resetUpdateUser();
-      toast.error(updateUserError);
+      _resolvePendingToast("error", updateUserError);
     }
   }, [updateUserError, resetUpdateUser]);
 
@@ -75,10 +93,12 @@ const Profile = () => {
   };
 
   const _onChangeUserStatus = (status: string) => {
+    _showPendingToast("Updating user status...");
     fetchUpdateUser({ id: userId, status });
   };
 
   const _addRole = (roles: string) => {
+    _showPendingToast("Updating user role...");
     fetchUpdateUser({ id: userId, roles: [roles] });
   };
 
@@ -89,6 +109,7 @@ const Profile = () => {
     department?: string,
     profilePicture?: string | null
   ) => {
+    _showPendingToast("Updating profile...");
     return fetchUpdateUser({
       id: userId,
       name,

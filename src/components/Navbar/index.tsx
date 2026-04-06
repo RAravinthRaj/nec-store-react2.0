@@ -12,6 +12,7 @@ import { AppBar } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserDetails, logoutUser, removeItemInLocalStorage } from "../../utils";
 import { Notification, Recent } from "../../pages";
+import { toast } from "react-toastify";
 
 interface IUserData {
   id?: string;
@@ -69,14 +70,15 @@ export const Navbar = ({ menu, onToggleMenu, showHamburgerIcon }: INavbar) => {
     onToggleMenu(!menu);
   };
 
-  const _onDropDownItemClick = (id: string, link: string) => {
+  const _onDropDownItemClick = async (id: string, link: string) => {
     if (id === "switchRole") {
       navigate("/roles");
       return;
     } else if (id === "logOut") {
-      void logoutUser();
+      await logoutUser();
       removeItemInLocalStorage("cartProducts");
       removeItemInLocalStorage("totalPrice");
+      toast.success("Logout successful");
       navigate("/signin");
       return;
     } else if (id === "profile") {
