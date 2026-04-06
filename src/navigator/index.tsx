@@ -111,7 +111,11 @@ export const Navigator = () => {
             subtitle="You cannot access this page. Please go back to the sign in page."
             buttonTitle="Go to Home"
             onPress={async () => {
-              await logoutUser();
+              const loggedOut = await logoutUser();
+              if (!loggedOut) {
+                window.location.href = "/signin";
+                return;
+              }
               removeItemInLocalStorage("token");
               removeItemInLocalStorage("signInToken");
               removeItemInLocalStorage("cartProducts");

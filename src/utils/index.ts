@@ -160,7 +160,7 @@ export const fetchSessionUser = async (): Promise<any | null> => {
   }
 };
 
-export const logoutUser = async (): Promise<void> => {
+export const logoutUser = async (): Promise<boolean> => {
   try {
     await axios.post(
       `${config.restBaseURL}/logout`,
@@ -169,9 +169,11 @@ export const logoutUser = async (): Promise<void> => {
         withCredentials: true,
       }
     );
-  } catch (_) {
-  } finally {
     setUserDetails(null);
+    return true;
+  } catch (_) {
+    return false;
+  } finally {
   }
 };
 

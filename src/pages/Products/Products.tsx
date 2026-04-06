@@ -257,7 +257,6 @@ const Products = () => {
       skip: 0,
     });
 
-    console.log("sort by", type);
   };
 
   const _onPageChange = (page: number) => {

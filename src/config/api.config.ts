@@ -11,8 +11,10 @@ export interface Config {
   graphqlBaseURL: string;
 }
 
+const normalizeURL = (value?: string): string => (value || "").trim().replace(/\/+$/, "");
+
 export const config: Config = {
   nodeEnv: import.meta.env.VITE_NODE_ENV || "development",
-  restBaseURL: import.meta.env.VITE_REST_API_URL || "",
-  graphqlBaseURL: import.meta.env.VITE_GRAPHQL_API_URL || "",
+  restBaseURL: normalizeURL(import.meta.env.VITE_REST_API_URL),
+  graphqlBaseURL: normalizeURL(import.meta.env.VITE_GRAPHQL_API_URL),
 };

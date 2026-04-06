@@ -209,8 +209,6 @@ const Carts = () => {
 
       const orderResponse = await CartsService.createRazorpayOrderAPI(products);
       const paymentOrder = orderResponse?.payload?.paymentOrder;
-      console.log("Here", paymentOrder);
-
       if (!paymentOrder?.id || !paymentOrder?.key) {
         throw new globalThis.Error("Failed to initialize payment.");
       }

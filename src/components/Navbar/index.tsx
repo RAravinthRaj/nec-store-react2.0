@@ -75,7 +75,11 @@ export const Navbar = ({ menu, onToggleMenu, showHamburgerIcon }: INavbar) => {
       navigate("/roles");
       return;
     } else if (id === "logOut") {
-      await logoutUser();
+      const loggedOut = await logoutUser();
+      if (!loggedOut) {
+        toast.error("Logout failed. Please try again.");
+        return;
+      }
       removeItemInLocalStorage("cartProducts");
       removeItemInLocalStorage("totalPrice");
       toast.success("Logout successful");

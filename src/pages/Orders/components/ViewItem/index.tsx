@@ -60,9 +60,6 @@ export const ViewItemModal = ({
       toast.info("Nothing to Update", { toastId: "no-update" });
     }
   };
-
-  console.log(individualOrder?.orderStatus);
-
   const _renderDropDown = (
     data: string,
     setData: (value: string) => void,
