@@ -180,7 +180,8 @@ export const DropDownIcon = styled(SlArrowDown)<{
 
 export const IconText = styled.div<{ $bgColor: string }>`
   color: ${(props) => props.$bgColor};
-  z-index: -1;
+  position: relative;
+  z-index: 1;
 
   @media (max-width: 576px) {
     font-size: 14px;
